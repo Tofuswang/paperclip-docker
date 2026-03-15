@@ -21,14 +21,39 @@ spec:
       name: Domain
       description: The domain for accessing Paperclip UI (e.g. my-paperclip)
   services:
+    - name: PostgreSQL
+      icon: https://raw.githubusercontent.com/zeabur/service-icons/main/marketplace/postgresql.svg
+      template: PREBUILT
+      spec:
+        source:
+          image: postgres:16-alpine
+        ports:
+          - id: database
+            port: 5432
+            type: TCP
+        volumes:
+          - id: pgdata
+            dir: /var/lib/postgresql/data
+        env:
+          POSTGRES_USER:
+            default: paperclip
+          POSTGRES_PASSWORD:
+            default: ${POSTGRES_PASSWORD}
+            expose: true
+          POSTGRES_DB:
+            default: paperclip
+          PGDATA:
+            default: /var/lib/postgresql/data/pgdata
+            readonly: true
     - name: Paperclip
       icon: https://raw.githubusercontent.com/Tofuswang/paperclip-docker/main/doc/assets/paperclip-icon.jpg
       template: PREBUILT
       domainKey: PUBLIC_DOMAIN
+      depends:
+        - PostgreSQL
       spec:
         source:
           image: ghcr.io/tofuswang/paperclip-docker:latest
-          uid: 1000
         ports:
           - id: web
             port: 3100
@@ -48,6 +73,9 @@ spec:
             readonly: true
           SERVE_UI:
             default: "true"
+          DATABASE_URL:
+            default: postgres://paperclip:${POSTGRES_PASSWORD}@PostgreSQL.zeabur.internal:5432/paperclip
+            readonly: true
           PAPERCLIP_HOME:
             default: /paperclip
             readonly: true

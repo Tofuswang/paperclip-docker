@@ -86,6 +86,8 @@ spec:
             default: authenticated
           PAPERCLIP_DEPLOYMENT_EXPOSURE:
             default: private
+          PAPERCLIP_ALLOWED_HOSTNAMES:
+            default: ${ZEABUR_WEB_DOMAIN}
         instructions:
           - type: TEXT
             title: Getting Started

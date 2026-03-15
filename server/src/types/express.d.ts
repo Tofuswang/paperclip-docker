@@ -1,4 +1,4 @@
-export interface Actor {
+interface PaperclipActor {
   type: "board" | "agent" | "none";
   userId?: string;
   agentId?: string;
@@ -10,8 +10,14 @@ export interface Actor {
   source: string;
 }
 
+declare namespace Express {
+  interface Request {
+    actor: PaperclipActor;
+  }
+}
+
 declare module "express-serve-static-core" {
   interface Request {
-    actor: Actor;
+    actor: PaperclipActor;
   }
 }

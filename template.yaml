@@ -28,6 +28,7 @@ spec:
       spec:
         source:
           image: ghcr.io/tofuswang/paperclip-docker:latest
+          uid: 1000
         ports:
           - id: web
             port: 3100

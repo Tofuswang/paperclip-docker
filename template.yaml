@@ -1,0 +1,154 @@
+# yaml-language-server: $schema=https://schema.zeabur.app/template.json
+apiVersion: zeabur.com/v1
+kind: Template
+metadata:
+  name: Paperclip
+spec:
+  description: >-
+    Open-source orchestration for zero-human companies. If OpenClaw is an employee,
+    Paperclip is the company. Manage goals, hire AI agents, enforce budgets, and
+    monitor everything from one dashboard.
+  icon: https://raw.githubusercontent.com/Tofuswang/paperclip-docker/main/doc/assets/logos/paperclip-icon.png
+  coverImage: https://raw.githubusercontent.com/Tofuswang/paperclip-docker/main/doc/assets/header.png
+  tags:
+    - AI
+    - Agent
+    - Orchestration
+    - Tool
+  variables:
+    - key: PUBLIC_DOMAIN
+      type: DOMAIN
+      name: Domain
+      description: The domain for accessing Paperclip UI (e.g. my-paperclip)
+  services:
+    - name: Paperclip
+      icon: https://raw.githubusercontent.com/Tofuswang/paperclip-docker/main/doc/assets/logos/paperclip-icon.png
+      template: PREBUILT
+      domainKey: PUBLIC_DOMAIN
+      spec:
+        source:
+          image: ghcr.io/tofuswang/paperclip-docker:main
+        ports:
+          - id: web
+            port: 3100
+            type: HTTP
+        volumes:
+          - id: paperclip-data
+            dir: /paperclip
+        env:
+          NODE_ENV:
+            default: production
+            readonly: true
+          HOST:
+            default: "0.0.0.0"
+            readonly: true
+          PORT:
+            default: "3100"
+            readonly: true
+          SERVE_UI:
+            default: "true"
+          PAPERCLIP_HOME:
+            default: /paperclip
+            readonly: true
+          PAPERCLIP_INSTANCE_ID:
+            default: default
+          PAPERCLIP_DEPLOYMENT_MODE:
+            default: authenticated
+          PAPERCLIP_DEPLOYMENT_EXPOSURE:
+            default: private
+        instructions:
+          - type: TEXT
+            title: Getting Started
+            content: >-
+              Open the service URL from the Networking tab to access the Paperclip dashboard.
+              Create a company, hire AI agents, set goals, and let them run your business.
+  readme: |
+    # Paperclip
+
+    **Open-source orchestration for zero-human companies.**
+
+    If OpenClaw is an *employee*, Paperclip is the *company*.
+
+    Paperclip is a Node.js server and React UI that orchestrates a team of AI agents
+    to run a business. Bring your own agents, assign goals, and track work and costs
+    from one dashboard.
+
+    ## What You Get
+
+    - 🔌 **Bring Your Own Agent** — OpenClaw, Claude Code, Codex, Cursor, HTTP, Bash
+    - 🎯 **Goal Alignment** — every task traces back to the company mission
+    - 💓 **Heartbeats** — agents wake on schedule, check work, and act
+    - 💰 **Cost Control** — monthly budgets per agent, auto-throttle
+    - 🏢 **Multi-Company** — one deployment, many companies, complete isolation
+    - 🎫 **Ticket System** — every conversation traced, every decision explained
+    - 🛡️ **Governance** — approve hires, override strategy, pause any agent
+    - 📊 **Org Chart** — hierarchies, roles, reporting lines
+
+    ## Requirements
+
+    - **Minimum**: 2 vCPU / 4 GB RAM
+    - **Recommended**: 4 vCPU / 8 GB RAM
+    - Requires a [Dedicated Server](https://zeabur.com/docs/dedicated-server) on Zeabur
+
+    ## Usage
+
+    1. After deployment, open the service URL from the **Networking** tab
+    2. Create your first company and start hiring agents
+    3. Assign goals, set budgets, and monitor from the dashboard
+
+    ## Links
+
+    - [Documentation](https://paperclip.ing/docs)
+    - [GitHub](https://github.com/paperclipai/paperclip)
+    - [Discord](https://discord.gg/m4HZY7xNG3)
+
+    ## License
+
+    MIT © 2026 Paperclip
+  locales:
+    zh-TW:
+      description: >-
+        開源的零人公司編排系統。如果 OpenClaw 是員工，Paperclip 就是公司。
+        管理目標、雇用 AI Agent、控制預算，從一個儀表板監控一切。
+      readme: |
+        # Paperclip
+
+        **開源的零人公司編排系統。**
+
+        如果 OpenClaw 是*員工*，Paperclip 就是*公司*。
+
+        Paperclip 是一個 Node.js 伺服器和 React UI，用來編排一組 AI agent 來經營企業。
+        帶上你自己的 agent，指派目標，從一個儀表板追蹤工作和成本。
+
+        ## 功能
+
+        - 🔌 **自帶 Agent** — OpenClaw、Claude Code、Codex、Cursor、HTTP、Bash
+        - 🎯 **目標對齊** — 每個任務都追溯到公司使命
+        - 💓 **心跳機制** — Agent 按排程喚醒、檢查工作、執行
+        - 💰 **成本控制** — 每個 Agent 的月預算，自動節流
+        - 🏢 **多公司** — 一次部署，多家公司，完全隔離
+        - 🎫 **工單系統** — 每次對話可追蹤，每個決策有說明
+        - 🛡️ **治理** — 批准招聘、覆蓋策略、暫停任何 Agent
+        - 📊 **組織圖** — 層級、角色、匯報關係
+
+        ## 需求
+
+        - **最低**: 2 vCPU / 4 GB RAM
+        - **建議**: 4 vCPU / 8 GB RAM
+        - 需要 Zeabur [專用伺服器](https://zeabur.com/docs/dedicated-server)
+
+        ## 使用方式
+
+        1. 部署後，從 **Networking** 分頁打開服務 URL
+        2. 建立你的第一家公司，開始雇用 Agent
+        3. 指派目標、設定預算、從儀表板監控
+
+        ## 連結
+
+        - [文件](https://paperclip.ing/docs)
+        - [GitHub](https://github.com/paperclipai/paperclip)
+        - [Discord](https://discord.gg/m4HZY7xNG3)
+
+        ## 授權
+
+        MIT © 2026 Paperclip

@@ -27,7 +27,7 @@ spec:
       domainKey: PUBLIC_DOMAIN
       spec:
         source:
-          image: ghcr.io/tofuswang/paperclip-docker:main
+          image: ghcr.io/tofuswang/paperclip-docker:latest
         ports:
           - id: web
             port: 3100

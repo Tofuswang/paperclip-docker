@@ -98,11 +98,8 @@ spec:
           - type: TEXT
             title: Create Admin Account
             content: >-
-              1. Open the Command tab in Zeabur dashboard.
-              2. Run: pnpm paperclipai auth bootstrap-ceo
-              3. Copy the invite URL from the output.
-              4. Replace "http://localhost:3100" with your actual domain (e.g. https://your-domain.zeabur.app).
-              5. Open the modified URL in your browser to create your admin account.
+              Check the Runtime Log for your CEO invite link (auto-generated on first boot).
+              If you missed it, open the Command tab and run: cat /paperclip/instances/default/.invite-url
   readme: |
     # Paperclip
 

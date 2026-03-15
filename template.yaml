@@ -96,10 +96,13 @@ spec:
             default: ${ZEABUR_AI_HUB_API_KEY}
         instructions:
           - type: TEXT
-            title: Getting Started
+            title: Create Admin Account
             content: >-
-              Open the service URL from the Networking tab to access the Paperclip dashboard.
-              Create a company, hire AI agents, set goals, and let them run your business.
+              1. Open the Command tab in Zeabur dashboard.
+              2. Run: pnpm paperclipai auth bootstrap-ceo
+              3. Copy the invite URL from the output.
+              4. Replace "http://localhost:3100" with your actual domain (e.g. https://your-domain.zeabur.app).
+              5. Open the modified URL in your browser to create your admin account.
   readme: |
     # Paperclip
 

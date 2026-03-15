@@ -8,7 +8,7 @@ spec:
     Open-source orchestration for zero-human companies. If OpenClaw is an employee,
     Paperclip is the company. Manage goals, hire AI agents, enforce budgets, and
     monitor everything from one dashboard.
-  icon: https://raw.githubusercontent.com/Tofuswang/paperclip-docker/main/doc/assets/logos/paperclip-icon.png
+  icon: https://raw.githubusercontent.com/Tofuswang/paperclip-docker/main/doc/assets/paperclip-icon.jpg
   coverImage: https://raw.githubusercontent.com/Tofuswang/paperclip-docker/main/doc/assets/header.png
   tags:
     - AI
@@ -22,7 +22,7 @@ spec:
       description: The domain for accessing Paperclip UI (e.g. my-paperclip)
   services:
     - name: Paperclip
-      icon: https://raw.githubusercontent.com/Tofuswang/paperclip-docker/main/doc/assets/logos/paperclip-icon.png
+      icon: https://raw.githubusercontent.com/Tofuswang/paperclip-docker/main/doc/assets/paperclip-icon.jpg
       template: PREBUILT
       domainKey: PUBLIC_DOMAIN
       spec:

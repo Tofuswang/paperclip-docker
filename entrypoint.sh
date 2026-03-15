@@ -5,7 +5,40 @@ CONFIG_DIR="/paperclip/instances/default"
 CONFIG_FILE="$CONFIG_DIR/config.json"
 BOOTSTRAP_DONE="$CONFIG_DIR/.bootstrap-done"
 
-# Create config.json if it doesn't exist
+# ──────────────────────────────────────────────
+# Zeabur AI Hub: one key → all agents
+# ──────────────────────────────────────────────
+# If ZEABUR_AI_HUB_API_KEY is set and looks like a real value,
+# wire it into every agent runtime that Paperclip can spawn.
+AI_HUB_BASE="https://ai-hub.zeabur.com"
+HAS_AI_HUB_KEY=false
+case "${ZEABUR_AI_HUB_API_KEY}" in '${'*'}') ;; '') ;; *) HAS_AI_HUB_KEY=true ;; esac
+
+if [ "$HAS_AI_HUB_KEY" = true ]; then
+  echo "[entrypoint] Zeabur AI Hub key detected — configuring agent providers"
+
+  # OpenAI-compatible (Codex, GPT agents)
+  export OPENAI_API_KEY="${ZEABUR_AI_HUB_API_KEY}"
+  export OPENAI_BASE_URL="${AI_HUB_BASE}/v1"
+
+  # Anthropic passthrough (Claude Code)
+  export ANTHROPIC_API_KEY="${ZEABUR_AI_HUB_API_KEY}"
+  export ANTHROPIC_BASE_URL="${AI_HUB_BASE}/anthropic"
+
+  # Google Gemini via OpenAI compat
+  export GOOGLE_API_KEY="${ZEABUR_AI_HUB_API_KEY}"
+
+  echo "[entrypoint] AI Hub providers configured:"
+  echo "  OpenAI    → ${AI_HUB_BASE}/v1"
+  echo "  Anthropic → ${AI_HUB_BASE}/anthropic"
+  echo "  All agents will route through Zeabur AI Hub"
+else
+  echo "[entrypoint] No Zeabur AI Hub key — agents will use their own API keys"
+fi
+
+# ──────────────────────────────────────────────
+# Auto-generate config.json if missing
+# ──────────────────────────────────────────────
 if [ ! -f "$CONFIG_FILE" ]; then
   echo "[entrypoint] Creating config.json..."
   mkdir -p "$CONFIG_DIR"
@@ -32,11 +65,15 @@ if [ ! -f "$CONFIG_FILE" ]; then
   "
 fi
 
-# Start the server in background
+# ──────────────────────────────────────────────
+# Start server
+# ──────────────────────────────────────────────
 node --import ./server/node_modules/tsx/dist/loader.mjs server/dist/index.js &
 SERVER_PID=$!
 
-# If not yet bootstrapped, wait for server and run bootstrap-ceo
+# ──────────────────────────────────────────────
+# Auto-bootstrap CEO on first boot
+# ──────────────────────────────────────────────
 if [ ! -f "$BOOTSTRAP_DONE" ]; then
   echo "[entrypoint] Waiting for server to be ready for bootstrap..."
   for i in $(seq 1 60); do
@@ -44,10 +81,8 @@ if [ ! -f "$BOOTSTRAP_DONE" ]; then
       echo "[entrypoint] Server ready. Running bootstrap-ceo..."
       RESULT=$(pnpm paperclipai auth bootstrap-ceo 2>&1) || true
       echo "$RESULT"
-      # Extract invite URL and log it prominently
       INVITE=$(echo "$RESULT" | grep -o 'http[^ ]*invite/[^ ]*' | head -1)
       if [ -n "$INVITE" ]; then
-        # Replace localhost with actual domain
         DOMAIN="${PAPERCLIP_ALLOWED_HOSTNAMES:-localhost:3100}"
         PUBLIC_INVITE=$(echo "$INVITE" | sed "s|http://localhost:[0-9]*|https://$DOMAIN|")
         echo ""

@@ -92,14 +92,8 @@ spec:
             default: private
           PAPERCLIP_ALLOWED_HOSTNAMES:
             default: ${ZEABUR_WEB_DOMAIN}
-          OPENAI_API_KEY:
+          ZEABUR_AI_HUB_API_KEY:
             default: ${ZEABUR_AI_HUB_API_KEY}
-          OPENAI_BASE_URL:
-            default: https://ai-hub.zeabur.com/v1
-          ANTHROPIC_API_KEY:
-            default: ${ZEABUR_AI_HUB_API_KEY}
-          ANTHROPIC_BASE_URL:
-            default: https://ai-hub.zeabur.com/anthropic
         instructions:
           - type: TEXT
             title: Getting Started

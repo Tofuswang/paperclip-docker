@@ -78,40 +78,25 @@ if [ ! -f "$BOOTSTRAP_DONE" ]; then
   echo "[entrypoint] Waiting for server to be ready for bootstrap..."
   for i in $(seq 1 60); do
     if curl -sf "http://localhost:${PORT:-3100}/api/health" > /dev/null 2>&1; then
-      echo "[entrypoint] Server ready. Creating admin invite..."
-      # Use PAPERCLIP_BOOTSTRAP_TOKEN env var as the invite token
-      # This is set from ${PASSWORD} in the template, so it's predictable
-      # and can be shown in Instructions tab
-      BOOT_TOKEN="${PAPERCLIP_BOOTSTRAP_TOKEN:-}"
-      if [ -n "$BOOT_TOKEN" ]; then
-        INVITE_TOKEN="pcp_bootstrap_$BOOT_TOKEN"
-        node -e "
-          const crypto = require('crypto');
-          const { createDb, invites, instanceUserRoles } = require('@paperclipai/db');
-          const dbUrl = process.env.DATABASE_URL;
-          if (!dbUrl) { console.log('[entrypoint] No DATABASE_URL, skipping bootstrap'); process.exit(0); }
-          const db = createDb(dbUrl);
-          (async () => {
-            try {
-              const admins = await db.select().from(instanceUserRoles).then(r => r.filter(x => x.role === 'instance_admin'));
-              if (admins.length > 0) { console.log('[entrypoint] Admin already exists, skipping bootstrap'); process.exit(0); }
-              const token = '$INVITE_TOKEN';
-              const hash = crypto.createHash('sha256').update(token).digest('hex');
-              await db.insert(invites).values({
-                inviteType: 'bootstrap_ceo',
-                tokenHash: hash,
-                allowedJoinTypes: 'human',
-                expiresAt: new Date(Date.now() + 72 * 60 * 60 * 1000),
-                invitedByUserId: 'system',
-              });
-              console.log('[entrypoint] Bootstrap CEO invite created');
-            } catch (e) { console.log('[entrypoint] Bootstrap error:', e.message); }
-            finally { await db.\$client?.end?.({ timeout: 5 }).catch(() => {}); }
-          })();
-        " 2>&1 || true
+      echo "[entrypoint] Server ready. Running bootstrap-ceo..."
+      RESULT=$(pnpm paperclipai auth bootstrap-ceo 2>&1) || true
+      TOKEN=$(echo "$RESULT" | grep -o 'invite/[^ ]*' | head -1 | sed 's|invite/||')
+      if [ -n "$TOKEN" ]; then
+        DOMAIN="${PAPERCLIP_ALLOWED_HOSTNAMES%%,*}"
+        DOMAIN="${DOMAIN:-localhost:3100}"
+        echo ""
+        echo "============================================================"
+        echo ""
+        echo "  Open this URL to create your admin account:"
+        echo ""
+        echo "  https://$DOMAIN/invite/$TOKEN"
+        echo ""
+        echo "  (expires in 3 days)"
+        echo ""
+        echo "============================================================"
+        echo ""
       else
-        echo "[entrypoint] No PAPERCLIP_BOOTSTRAP_TOKEN set, running CLI bootstrap..."
-        pnpm paperclipai auth bootstrap-ceo 2>&1 || true
+        echo "$RESULT"
       fi
       touch "$BOOTSTRAP_DONE"
       break

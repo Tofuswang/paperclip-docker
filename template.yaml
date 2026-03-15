@@ -94,15 +94,12 @@ spec:
             default: ${ZEABUR_WEB_DOMAIN}
           ZEABUR_AI_HUB_API_KEY:
             default: ${ZEABUR_AI_HUB_API_KEY}
-          PAPERCLIP_BOOTSTRAP_TOKEN:
-            default: ${PASSWORD}
         instructions:
-          - type: BUTTON
-            title: Create Admin Account
-            content: https://${ZEABUR_WEB_DOMAIN}/invite/pcp_bootstrap_${PAPERCLIP_BOOTSTRAP_TOKEN}
           - type: TEXT
-            title: Admin Invite URL
-            content: https://${ZEABUR_WEB_DOMAIN}/invite/pcp_bootstrap_${PAPERCLIP_BOOTSTRAP_TOKEN}
+            title: Create Admin Account
+            content: >-
+              Check the Runtime Log for your admin invite link (auto-generated on first boot).
+              Copy the URL and open it in your browser to create your account.
   readme: |
     # Paperclip
 

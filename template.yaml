@@ -92,6 +92,8 @@ spec:
             default: private
           PAPERCLIP_ALLOWED_HOSTNAMES:
             default: ${ZEABUR_WEB_DOMAIN}
+          PAPERCLIP_AUTH_DISABLE_SIGN_UP:
+            default: "true"
           ZEABUR_AI_HUB_API_KEY:
             default: ${ZEABUR_AI_HUB_API_KEY}
         instructions:

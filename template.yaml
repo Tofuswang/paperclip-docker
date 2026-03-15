@@ -98,8 +98,8 @@ spec:
           - type: TEXT
             title: Create Admin Account
             content: >-
-              Check the Runtime Log for your CEO invite link (auto-generated on first boot).
-              If you missed it, open the Command tab and run: cat /paperclip/instances/default/.invite-url
+              Open the Files tab → /paperclip/INVITE-URL.txt to get your admin invite link.
+              Open that URL in your browser to create your account.
   readme: |
     # Paperclip
 

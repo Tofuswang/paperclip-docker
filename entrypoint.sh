@@ -87,7 +87,8 @@ if [ ! -f "$BOOTSTRAP_DONE" ]; then
         DOMAIN="${DOMAIN:-localhost:3100}"
         PUBLIC_INVITE=$(echo "$INVITE" | sed "s|http://localhost:[0-9]*|https://$DOMAIN|")
         export PAPERCLIP_INVITE_URL="$PUBLIC_INVITE"
-        # Write to file so it persists across restarts
+        # Write to prominent location — visible in Zeabur Files tab
+        echo "$PUBLIC_INVITE" > /paperclip/INVITE-URL.txt
         echo "$PUBLIC_INVITE" > "$CONFIG_DIR/.invite-url"
         echo ""
         echo "============================================"

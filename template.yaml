@@ -38,7 +38,7 @@ spec:
           POSTGRES_USER:
             default: paperclip
           POSTGRES_PASSWORD:
-            default: ${POSTGRES_PASSWORD}
+            default: paperclip
             expose: true
           POSTGRES_DB:
             default: paperclip
@@ -74,8 +74,7 @@ spec:
           SERVE_UI:
             default: "true"
           DATABASE_URL:
-            default: postgres://paperclip:${POSTGRES_PASSWORD}@PostgreSQL.zeabur.internal:5432/paperclip
-            readonly: true
+            default: postgres://paperclip:${PostgreSQL.POSTGRES_PASSWORD}@PostgreSQL.zeabur.internal:5432/paperclip
           PAPERCLIP_HOME:
             default: /paperclip
             readonly: true

@@ -15,9 +15,3 @@ declare namespace Express {
     actor: PaperclipActor;
   }
 }
-
-declare module "express-serve-static-core" {
-  interface Request {
-    actor: PaperclipActor;
-  }
-}

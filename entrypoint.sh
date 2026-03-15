@@ -81,21 +81,22 @@ if [ ! -f "$BOOTSTRAP_DONE" ]; then
       echo "[entrypoint] Server ready. Running bootstrap-ceo..."
       RESULT=$(pnpm paperclipai auth bootstrap-ceo 2>&1) || true
       echo "$RESULT"
-      INVITE=$(echo "$RESULT" | grep -o 'http[^ ]*invite/[^ ]*' | head -1)
-      if [ -n "$INVITE" ]; then
+      TOKEN=$(echo "$RESULT" | grep -o 'invite/[^ ]*' | head -1 | sed 's|invite/||')
+      if [ -n "$TOKEN" ]; then
         DOMAIN="${PAPERCLIP_ALLOWED_HOSTNAMES%%,*}"
         DOMAIN="${DOMAIN:-localhost:3100}"
-        PUBLIC_INVITE=$(echo "$INVITE" | sed "s|http://localhost:[0-9]*|https://$DOMAIN|")
-        export PAPERCLIP_INVITE_URL="$PUBLIC_INVITE"
-        # Write to prominent location — visible in Zeabur Files tab
-        echo "$PUBLIC_INVITE" > /paperclip/INVITE-URL.txt
+        PUBLIC_INVITE="https://$DOMAIN/invite/$TOKEN"
         echo "$PUBLIC_INVITE" > "$CONFIG_DIR/.invite-url"
         echo ""
-        echo "============================================"
-        echo "  PAPERCLIP CEO INVITE LINK"
+        echo "============================================================"
+        echo ""
+        echo "  Open this URL to create your admin account:"
+        echo ""
         echo "  $PUBLIC_INVITE"
+        echo ""
         echo "  (expires in 3 days)"
-        echo "============================================"
+        echo ""
+        echo "============================================================"
         echo ""
       fi
       touch "$BOOTSTRAP_DONE"

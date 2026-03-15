@@ -98,8 +98,10 @@ spec:
           - type: TEXT
             title: Create Admin Account
             content: >-
-              Open the Files tab → /paperclip/INVITE-URL.txt to get your admin invite link.
-              Open that URL in your browser to create your account.
+              Your admin invite link is printed in the Runtime Log on first boot.
+              Look for the URL starting with https://your-domain/invite/pcp_bootstrap_...
+              Open it in your browser to create your account.
+              If the invite expired, run in Command tab: pnpm paperclipai auth bootstrap-ceo
   readme: |
     # Paperclip
 

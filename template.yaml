@@ -73,6 +73,8 @@ spec:
             readonly: true
           SERVE_UI:
             default: "true"
+          BETTER_AUTH_SECRET:
+            default: ${PASSWORD}
           DATABASE_URL:
             default: postgres://paperclip:${POSTGRES_PASSWORD}@${POSTGRESQL_HOST}:5432/paperclip
           PAPERCLIP_HOME:
